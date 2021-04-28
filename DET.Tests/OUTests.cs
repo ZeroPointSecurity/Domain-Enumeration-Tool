@@ -1,0 +1,50 @@
+﻿using System.Linq;
+
+using Xunit;
+
+namespace DET.Tests
+{
+    public class OUTests
+    {
+        [Fact]
+        public void GetAllOUsAndProperties()
+        {
+            var searcher = new DomainSearcher();
+            var ous = new OrganizationalUnits(searcher);
+
+            var results = ous.GetOrganizationalUnits();
+
+            Assert.NotNull(results);
+            Assert.True(results.Any());
+            Assert.True(results.First().Value.Values.Count > 15);
+        }
+
+        [Fact]
+        public void GetSingleOUAllProperties()
+        {
+            var searcher = new DomainSearcher();
+            var ous = new OrganizationalUnits(searcher);
+            var names = new string[] { "TestOU" };
+
+            var results = ous.GetOrganizationalUnits(names);
+
+            Assert.NotNull(results);
+            Assert.True(results.Count == 1);
+        }
+
+        [Fact]
+        public void GetSingleOUSingleProperty()
+        {
+            var searcher = new DomainSearcher();
+            var ous = new OrganizationalUnits(searcher);
+            var names = new string[] { "TestOU" };
+            var properties = new string[] { "distinguishedname" };
+
+            var results = ous.GetOrganizationalUnits(names, properties);
+
+            Assert.NotNull(results);
+            Assert.True(results.Count == 1);
+            Assert.True(results.First().Value.Values.Count == 2);
+        }
+    }
+}

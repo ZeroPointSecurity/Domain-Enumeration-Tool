@@ -39,5 +39,18 @@ namespace DET.Tests
             Assert.Equal(searcher.Directory.Path, path);
             Assert.Equal(searcher.Directory.Username, username);
         }
+
+        [Fact]
+        public void ModifyAuthenticationTypes()
+        {
+            var searcher = new DomainSearcher();
+            var types = System.DirectoryServices.AuthenticationTypes.Secure | System.DirectoryServices.AuthenticationTypes.Delegation;
+
+            searcher.SetAuthenticationTypes(types);
+
+            Assert.NotNull(searcher);
+            Assert.NotNull(searcher.Directory);
+            Assert.Equal(searcher.Directory.AuthenticationType, types);
+        }
     }
 }
