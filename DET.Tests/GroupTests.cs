@@ -46,5 +46,19 @@ namespace DET.Tests
             Assert.True(results.Count == 1);
             Assert.True(results.First().Value.Values.Count == 2);
         }
+
+        [Fact]
+        public void GetAllGroupsSingleProperty()
+        {
+            var searcher = new DomainSearcher();
+            var groups = new Groups(searcher);
+            var properties = new string[] { "member" };
+
+            var results = groups.GetGroups(properties: properties);
+
+            Assert.NotNull(results);
+            Assert.True(results.Any());
+            Assert.True(results.First().Value.Values.Count == 2);
+        }
     }
 }

@@ -16,36 +16,29 @@ namespace DET
         }
 
         /// <summary>
-        /// Get all Group Policy Objects and their properties.
-        /// </summary>
-        /// <returns>A multi-level dictionary of GPOs and their properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetGPOs()
-        {
-            var ldap = new LDAP(_searcher);
-            var filter = "(&(objectCategory=groupPolicyContainer))";
-
-            return ldap.ExecuteQuery(filter);
-        }
-
-        /// <summary>
         /// Get the specified GPOs and their properties.
         /// </summary>
         /// <param name="gpoNames">Limit the response to the these GPO display names.</param>
         /// <param name="properties">An array of properties to return.</param>
         /// <returns>A multi-level dictionary of GPOs and their properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetGPOs(string[] gpoNames, string[] properties = null)
+        public Dictionary<string, Dictionary<string, object[]>> GetGPOs(string[] gpoNames = null, string[] properties = null)
         {
             var ldap = new LDAP(_searcher);
             var filter = "(&(objectCategory=groupPolicyContainer)";
 
-            filter += "(|";
-
-            foreach (var gpoName in gpoNames)
+            if (gpoNames is not null)
             {
-                filter += $"(displayname=*{gpoName}*)";
+                filter += "(|";
+
+                foreach (var gpoName in gpoNames)
+                {
+                    filter += $"(displayname=*{gpoName}*)";
+                }
+
+                filter += ")";
             }
 
-            filter += "))";
+            filter += ")";
 
             return ldap.ExecuteQuery(filter, properties);
         }

@@ -16,36 +16,29 @@ namespace DET
         }
 
         /// <summary>
-        /// Get all groups and their properties.
-        /// </summary>
-        /// <returns>A multi-level dictionary of groups and their properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetGroups()
-        {
-            var ldap = new LDAP(_searcher);
-            var filter = "(&(objectCategory=group))";
-
-            return ldap.ExecuteQuery(filter);
-        }
-
-        /// <summary>
         /// Get the specified groups and their properties.
         /// </summary>
         /// <param name="groupNames">Limit the response to the these group names.</param>
         /// <param name="properties">An array of properties to return.</param>
         /// <returns>A multi-level dictionary of groups and their properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetGroups(string[] groupNames, string[] properties = null)
+        public Dictionary<string, Dictionary<string, object[]>> GetGroups(string[] groupNames = null, string[] properties = null)
         {
             var ldap = new LDAP(_searcher);
             var filter = "(&(objectCategory=group)";
 
-            filter += "(|";
-
-            foreach (var groupName in groupNames)
+            if (groupNames is not null)
             {
-                filter += $"(name=*{groupName}*)";
+                filter += "(|";
+
+                foreach (var groupName in groupNames)
+                {
+                    filter += $"(name=*{groupName}*)";
+                }
+
+                filter += ")";
             }
 
-            filter += "))";
+            filter += ")";
 
             return ldap.ExecuteQuery(filter, properties);
         }

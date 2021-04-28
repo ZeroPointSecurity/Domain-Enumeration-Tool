@@ -61,5 +61,19 @@ namespace DET.Tests
             Assert.True(results.Count == 1);
             Assert.True(results.First().Value.Values.Count == 2);
         }
+
+        [Fact]
+        public void GetAllComputersSingleProperty()
+        {
+            var searcher = new DomainSearcher();
+            var computers = new Computers(searcher);
+            var properties = new string[] { "serviceprincipalname" };
+
+            var results = computers.GetComputers(properties: properties);
+
+            Assert.NotNull(results);
+            Assert.True(results.Any());
+            Assert.True(results.First().Value.Values.Count == 2);
+        }
     }
 }

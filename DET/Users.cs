@@ -16,36 +16,29 @@ namespace DET
         }
 
         /// <summary>
-        /// Get all users and their properties.
-        /// </summary>
-        /// <returns>A multi-level dictionary of users and their properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetUsers()
-        {
-            var ldap = new LDAP(_searcher);
-            var filter = "(&(sAMAccountType=805306368))";
-
-            return ldap.ExecuteQuery(filter);
-        }
-
-        /// <summary>
         /// Get the specified users and their properties.
         /// </summary>
         /// <param name="userNames">Limit the response to the these usernames.</param>
         /// <param name="properties">An array of properties to return.</param>
         /// <returns>A multi-level dictionary of users and their properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetUsers(string[] userNames, string[] properties = null)
+        public Dictionary<string, Dictionary<string, object[]>> GetUsers(string[] userNames = null, string[] properties = null)
         {
             var ldap = new LDAP(_searcher);
             var filter = "(&(sAMAccountType=805306368)";
 
-            filter += "(|";
-
-            foreach (var userName in userNames)
+            if (userNames is not null)
             {
-                filter += $"(samaccountname=*{userName}*)";
+                filter += "(|";
+
+                foreach (var userName in userNames)
+                {
+                    filter += $"(samaccountname=*{userName}*)";
+                }
+
+                filter += ")";
             }
 
-            filter += "))";
+            filter += ")";
 
             return ldap.ExecuteQuery(filter, properties);
         }

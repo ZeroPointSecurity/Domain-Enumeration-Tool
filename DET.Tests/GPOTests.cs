@@ -46,5 +46,19 @@ namespace DET.Tests
             Assert.True(results.Count == 1);
             Assert.True(results.First().Value.Values.Count == 2);
         }
+
+        [Fact]
+        public void GetAllGPOsSingleProperty()
+        {
+            var searcher = new DomainSearcher();
+            var ous = new GroupPolicyObjects(searcher);
+            var properties = new string[] { "gpcfilesyspath" };
+
+            var results = ous.GetGPOs(properties: properties);
+
+            Assert.NotNull(results);
+            Assert.True(results.Any());
+            Assert.True(results.First().Value.Values.Count == 2);
+        }
     }
 }
