@@ -3,6 +3,17 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9.0</LangVersion>
+    <PackageId>Domain-Enumeration-Tool</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>Daniel Duggan</Authors>
+    <Company>Zero-Point Security Ltd</Company>
+    <Product>Domain-Enumeration-Tool</Product>
+    <Description>Perform Windows domain enumeration via LDAP</Description>
+    <PackageProjectUrl>https://www.zeropointsecurity.co.uk/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/ZeroPointSecurity/Domain-Enumeration-Tool</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageTags></PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
