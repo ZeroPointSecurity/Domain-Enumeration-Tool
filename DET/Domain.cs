@@ -1,9 +1,6 @@
-﻿using System;
-using System.DirectoryServices.ActiveDirectory;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
-
-using ADDomain = System.DirectoryServices.ActiveDirectory.Domain;
 
 namespace DET
 {
@@ -21,25 +18,16 @@ namespace DET
         }
 
         /// <summary>
-        /// Get information about the domain.
-        /// </summary>
-        /// <param name="domainName">The name of the domain.</param>
-        /// <returns>System.DirectoryServices.ActiveDirectory.Domain.</returns>
-        public ADDomain GetDomain(string domainName)
-        {
-            var context = new DirectoryContext(DirectoryContextType.Domain, domainName);
-            return ADDomain.GetDomain(context);
-        }
-
-        /// <summary>
         /// Get a collection of Domain Controllers for the domain.
         /// </summary>
-        /// <param name="domainName">The name of the domain.</param>
-        /// <returns>System.DirectoryServices.ActiveDirectory.</returns>
-        public DomainControllerCollection GetDomainControllers(string domainName)
+        /// <param name="properties">An array of properties to return.</param>
+        /// <returns>A multi-level dictionary of domain and its properties.</returns>
+        public Dictionary<string, Dictionary<string, object[]>> GetDomainControllers(string[] properties = null)
         {
-            var domain = GetDomain(domainName);
-            return domain.DomainControllers;
+            var filter = "(&(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=8192))";
+            var ldap = new LDAP(_searcher);
+
+            return ldap.ExecuteQuery(filter, properties);
         }
 
         /// <summary>
@@ -48,14 +36,8 @@ namespace DET
         /// <returns>String.</returns>
         public string GetDomainSid()
         {
-            var filter = "(userAccountControl:1.2.840.113556.1.4.803:=8192)";
-            var ldap = new LDAP(_searcher);
-
             var properties = new string[] { "objectsid" };
-            var domainControllers = ldap.ExecuteQuery(filter, properties);
-
-            if (domainControllers is null || domainControllers.Count == 0)
-                throw new DomainException("Could not locate Domain Controllers for the domain");
+            var domainControllers = GetDomainControllers(properties);
 
             var firstDc = domainControllers.Values.First();
             var dcSidBytes = firstDc["objectsid"].First() as byte[];
@@ -63,14 +45,18 @@ namespace DET
 
             return dcSid.Value.Substring(0, dcSid.Value.LastIndexOf('-'));
         }
-    }
 
-    public class DomainException : Exception
-    {
-        public DomainException() { }
+        /// <summary>
+        /// Get domain trusts
+        /// </summary>
+        /// <param name="properties">An array of properties to return.</param>
+        /// <returns>A multi-level dictionary of domain trust and its properties.</returns>
+        public Dictionary<string, Dictionary<string, object[]>> GetDomainTrusts(string[] properties = null)
+        {
+            var filter = "(objectClass=trustedDomain)";
+            var ldap = new LDAP(_searcher);
 
-        public DomainException(string message) : base(message) { }
-
-        public DomainException(string message, Exception inner) : base(message, inner) { }
+            return ldap.ExecuteQuery(filter, properties);
+        }
     }
 }

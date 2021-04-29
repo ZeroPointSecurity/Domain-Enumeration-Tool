@@ -42,5 +42,26 @@ namespace DET
 
             return ldap.ExecuteQuery(filter, properties);
         }
+
+        /// <summary>
+        /// Get computers permitted to perform unconstrained delegation.
+        /// </summary>
+        /// <param name="properties">An array of properties to return.</param>
+        /// <returns>A multi-level dictionary of computers and their properties.</returns>
+        public Dictionary<string, Dictionary<string, object[]>> GetTrustedForUnconstrainedDelegation(string[] properties = null)
+        {
+            var ldap = new LDAP(_searcher);
+            var filter = "(&(objectCategory=computer)(userAccountControl:1.2.840.113556.1.4.803:=524288))";
+
+            return ldap.ExecuteQuery(filter, properties);
+        }
+
+        public Dictionary<string, Dictionary<string, object[]>> GetAllowedToDelegateTo(string[] properties = null)
+        {
+            var ldap = new LDAP(_searcher);
+            var filter = "(&(objectCategory=computer)(msds-allowedtodelegateto=*))";
+
+            return ldap.ExecuteQuery(filter, properties);
+        }
     }
 }

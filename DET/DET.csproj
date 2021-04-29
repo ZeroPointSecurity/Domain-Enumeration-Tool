@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PackageId>Domain-Enumeration-Tool</PackageId>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Authors>Daniel Duggan</Authors>
     <Company>Zero-Point Security Ltd</Company>
     <Product>Domain-Enumeration-Tool</Product>
@@ -14,7 +14,6 @@
     <RepositoryType>GitHub</RepositoryType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags></PackageTags>
-    <AssemblyVersion>0.0.2.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

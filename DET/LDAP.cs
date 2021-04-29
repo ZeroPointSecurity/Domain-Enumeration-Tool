@@ -7,6 +7,7 @@ namespace DET
     public class LDAP
     {
         readonly DomainSearcher _searcher;
+        readonly SecurityMasks _securityMasks;
 
         /// <summary>
         /// Initializes a new instance of the DET.LDAP class.
@@ -15,6 +16,18 @@ namespace DET
         public LDAP(DomainSearcher searcher)
         {
             _searcher = searcher;
+            _securityMasks = SecurityMasks.None;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the DET.LDAP class.
+        /// </summary>
+        /// <param name="searcher">An instance of the DET.DomainSearcher class.</param>
+        /// <param name="securityMasks">The security mask for the DirectorySearcher.</param>
+        public LDAP(DomainSearcher searcher, SecurityMasks securityMasks)
+        {
+            _searcher = searcher;
+            _securityMasks = securityMasks;
         }
 
         /// <summary>
@@ -27,7 +40,8 @@ namespace DET
         {
             var searcher = new DirectorySearcher(_searcher.Directory)
             {
-                Filter = filter
+                Filter = filter,
+                SecurityMasks = _securityMasks
             };
 
             if (properties is not null)

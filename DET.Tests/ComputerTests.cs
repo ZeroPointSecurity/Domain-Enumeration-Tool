@@ -75,5 +75,29 @@ namespace DET.Tests
             Assert.True(results.Any());
             Assert.True(results.First().Value.Values.Count == 2);
         }
+
+        [Fact]
+        public void GetUnconstrainedDelegation()
+        {
+            var searcher = new DomainSearcher();
+            var computers = new Computers(searcher);
+
+            var results = computers.GetTrustedForUnconstrainedDelegation();
+
+            Assert.NotNull(results);
+            Assert.True(results.Any());
+        }
+
+        [Fact]
+        public void GetAllowedToDelegateTo()
+        {
+            var searcher = new DomainSearcher();
+            var computers = new Computers(searcher);
+
+            var results = computers.GetAllowedToDelegateTo();
+
+            Assert.NotNull(results);
+            Assert.True(results.Any());
+        }
     }
 }
