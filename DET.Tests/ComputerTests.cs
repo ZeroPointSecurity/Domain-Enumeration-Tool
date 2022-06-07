@@ -2,102 +2,101 @@
 
 using Xunit;
 
-namespace DET.Tests
+namespace DET.Tests;
+
+public class ComputerTests
 {
-    public class ComputerTests
+    [Fact]
+    public void GetAllComputersAndProperties()
     {
-        [Fact]
-        public void GetAllComputersAndProperties()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
 
-            var results = computers.GetComputers();
+        var results = computers.GetComputers();
 
-            Assert.NotNull(results);
-            Assert.True(results.Any());
-            Assert.True(results.First().Value.Values.Count > 30);
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Any());
+        Assert.True(results.First().Value.Values.Count > 30);
+    }
 
-        [Fact]
-        public void GetSingleComputerAllProperties()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
-            var computerNames = new string[] { "dc-1" };
+    [Fact]
+    public void GetSingleComputerAllProperties()
+    {
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
+        var computerNames = new[] { "dc-1" };
 
-            var results = computers.GetComputers(computerNames);
+        var results = computers.GetComputers(computerNames);
 
-            Assert.NotNull(results);
-            Assert.True(results.Count == 1);
-            Assert.True(results.First().Value.Values.Count > 30);
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Count == 1);
+        Assert.True(results.First().Value.Values.Count > 30);
+    }
 
-        [Fact]
-        public void GetTwoComputersAllProperties()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
-            var computerNames = new string[] { "dc-1", "wkstn-1" };
+    [Fact]
+    public void GetTwoComputersAllProperties()
+    {
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
+        var computerNames = new[] { "dc-1", "wkstn-1" };
 
-            var results = computers.GetComputers(computerNames);
+        var results = computers.GetComputers(computerNames);
 
-            Assert.NotNull(results);
-            Assert.True(results.Count == 2);
-            Assert.True(results.First().Value.Values.Count > 30);
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Count == 2);
+        Assert.True(results.First().Value.Values.Count > 30);
+    }
 
-        [Fact]
-        public void GetSingleComputerSingleProperty()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
-            var computerNames = new string[] { "dc-1" };
-            var properties = new string[] { "serviceprincipalname" };
+    [Fact]
+    public void GetSingleComputerSingleProperty()
+    {
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
+        var computerNames = new[] { "dc-1" };
+        var properties = new[] { "serviceprincipalname" };
 
-            var results = computers.GetComputers(computerNames, properties);
+        var results = computers.GetComputers(computerNames, properties);
 
-            Assert.NotNull(results);
-            Assert.True(results.Count == 1);
-            Assert.True(results.First().Value.Values.Count == 2);
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Count == 1);
+        Assert.True(results.First().Value.Values.Count == 2);
+    }
 
-        [Fact]
-        public void GetAllComputersSingleProperty()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
-            var properties = new string[] { "serviceprincipalname" };
+    [Fact]
+    public void GetAllComputersSingleProperty()
+    {
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
+        var properties = new[] { "serviceprincipalname" };
 
-            var results = computers.GetComputers(properties: properties);
+        var results = computers.GetComputers(properties: properties);
 
-            Assert.NotNull(results);
-            Assert.True(results.Any());
-            Assert.True(results.First().Value.Values.Count == 2);
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Any());
+        Assert.True(results.First().Value.Values.Count == 2);
+    }
 
-        [Fact]
-        public void GetUnconstrainedDelegation()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
+    [Fact]
+    public void GetUnconstrainedDelegation()
+    {
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
 
-            var results = computers.GetTrustedForUnconstrainedDelegation();
+        var results = computers.GetTrustedForUnconstrainedDelegation();
 
-            Assert.NotNull(results);
-            Assert.True(results.Any());
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Any());
+    }
 
-        [Fact]
-        public void GetAllowedToDelegateTo()
-        {
-            var searcher = new DomainSearcher();
-            var computers = new Computers(searcher);
+    [Fact]
+    public void GetAllowedToDelegateTo()
+    {
+        var searcher = new DomainSearcher();
+        var computers = new Computers(searcher);
 
-            var results = computers.GetAllowedToDelegateTo();
+        var results = computers.GetAllowedToDelegateTo();
 
-            Assert.NotNull(results);
-            Assert.True(results.Any());
-        }
+        Assert.NotNull(results);
+        Assert.True(results.Any());
     }
 }

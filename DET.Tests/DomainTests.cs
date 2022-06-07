@@ -2,44 +2,43 @@
 
 using Xunit;
 
-namespace DET.Tests
+namespace DET.Tests;
+
+public class DomainTests
 {
-    public class DomainTests
+    [Fact]
+    public void GetDomainControllers()
     {
-        [Fact]
-        public void GetDomainControllers()
-        {
-            var searcher = new DomainSearcher();
-            var detDomain = new Domain(searcher);
+        var searcher = new DomainSearcher();
+        var detDomain = new Domain(searcher);
 
-            var domainControllers = detDomain.GetDomainControllers();
+        var domainControllers = detDomain.GetDomainControllers();
 
-            Assert.NotNull(domainControllers);
-            Assert.True(domainControllers.Count > 0);
-        }
+        Assert.NotNull(domainControllers);
+        Assert.True(domainControllers.Count > 0);
+    }
 
-        [Fact]
-        public void GetDomainSid()
-        {
-            var searcher = new DomainSearcher();
-            var domain = new Domain(searcher);
+    [Fact]
+    public void GetDomainSid()
+    {
+        var searcher = new DomainSearcher();
+        var domain = new Domain(searcher);
 
-            var result = domain.GetDomainSid();
+        var result = domain.GetDomainSid();
 
-            Assert.NotNull(result);
-            Assert.True(result.Length == 40);
-        }
+        Assert.NotNull(result);
+        Assert.True(result.Length == 40);
+    }
 
-        [Fact]
-        public void GetDomainTrusts()
-        {
-            var searcher = new DomainSearcher();
-            var domain = new Domain(searcher);
+    [Fact]
+    public void GetDomainTrusts()
+    {
+        var searcher = new DomainSearcher();
+        var domain = new Domain(searcher);
 
-            var result = domain.GetDomainTrusts();
+        var result = domain.GetDomainTrusts();
 
-            Assert.NotNull(result);
-            Assert.True(result.Any());
-        }
+        Assert.NotNull(result);
+        Assert.True(result.Any());
     }
 }

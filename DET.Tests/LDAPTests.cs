@@ -2,21 +2,20 @@
 
 using Xunit;
 
-namespace DET.Tests
+namespace DET.Tests;
+
+public class LDAPTests
 {
-    public class LDAPTests
+    [Fact]
+    public void RawQueryTest()
     {
-        [Fact]
-        public void RawQueryTest()
-        {
-            var filter = "(&(objectCategory=computer))";
-            var searcher = new DomainSearcher();
-            var ldap = new LDAP(searcher);
+        var filter = "(&(objectCategory=computer))";
+        var searcher = new DomainSearcher();
+        var ldap = new LDAP(searcher);
 
-            var result = ldap.ExecuteQuery(filter);
+        var result = ldap.ExecuteQuery(filter);
 
-            Assert.NotNull(result);
-            Assert.True(result.Any());
-        }
+        Assert.NotNull(result);
+        Assert.True(result.Any());
     }
 }

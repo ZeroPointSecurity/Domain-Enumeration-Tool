@@ -1,31 +1,30 @@
 ﻿using System.Collections.Generic;
 
-namespace DET
+namespace DET;
+
+public class LAPS
 {
-    public class LAPS
+    private readonly DomainSearcher _searcher;
+
+    /// <summary>
+    /// Initializes a new instance of the DET.LAPS class.
+    /// </summary>
+    /// <param name="searcher">An instance of the DET.DomainSearcher class.</param>
+    public LAPS(DomainSearcher searcher)
     {
-        readonly DomainSearcher _searcher;
+        _searcher = searcher;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the DET.LAPS class.
-        /// </summary>
-        /// <param name="searcher">An instance of the DET.DomainSearcher class.</param>
-        public LAPS(DomainSearcher searcher)
-        {
-            _searcher = searcher;
-        }
+    /// <summary>
+    /// Get computers were the ms-Mcs-AdmPwdExpirationTime attribute is not null
+    /// </summary>
+    /// <param name="properties">An array of properties to return.</param>
+    /// <returns>A multi-level dictionary of domain and its properties.</returns>
+    public Dictionary<string, Dictionary<string, object[]>> GetComputersWithLAPS(string[] properties = null)
+    {
+        var ldap = new LDAP(_searcher);
+        const string filter = "(&(objectCategory=computer)(ms-Mcs-AdmPwdExpirationTime=*))";
 
-        /// <summary>
-        /// Get computers were the ms-Mcs-AdmPwdExpirationTime attribute is not null
-        /// </summary>
-        /// <param name="properties">An array of properties to return.</param>
-        /// <returns>A multi-level dictionary of domain and its properties.</returns>
-        public Dictionary<string, Dictionary<string, object[]>> GetComputersWithLAPS(string[] properties = null)
-        {
-            var filter = "(&(objectCategory=computer)(ms-Mcs-AdmPwdExpirationTime=*))";
-            var ldap = new LDAP(_searcher);
-
-            return ldap.ExecuteQuery(filter, properties);
-        }
+        return ldap.ExecuteQuery(filter, properties);
     }
 }
